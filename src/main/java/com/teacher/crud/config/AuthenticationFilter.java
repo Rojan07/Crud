@@ -3,28 +3,28 @@ package com.teacher.crud.config;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.GenericFilterBean;
+import com.teacher.crud.service.AuthenticationService;
 
-public class AuthenticationFilter extends BasicAuthenticationFilter {
 
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
-        super(authenticationManager);
-     
-    }
+public class AuthenticationFilter extends GenericFilterBean {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
-                String apiKey = request.getHeader("x-api-key");
-
-                if (apiKey=="ashdki21388324jsda") 
+                try{
+                    Authentication authentication = AuthenticationService.getAuthentication((HttpServletRequest)request);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }catch (Exception e){
+                   HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+                   httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                }      
                 chain.doFilter(request, response);
-                    else
-                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                
     }
 }
