@@ -24,7 +24,7 @@ public class AuthenticationFilter extends GenericFilterBean {
                 }catch (Exception e){
                    HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                    httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                }      
+                }
                 chain.doFilter(request, response);
     }
 }

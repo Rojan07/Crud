@@ -20,7 +20,7 @@ public  static Authentication getAuthentication(HttpServletRequest request){
         throw new BadCredentialsException("Invalid Api key");
     }
     return new ApiKeyAuthentication(apiKey,AuthorityUtils.NO_AUTHORITIES);
-} 
-     
+}
+
 
 }
