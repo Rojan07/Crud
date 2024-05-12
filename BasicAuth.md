@@ -5,4 +5,4 @@ API keys : https://www.baeldung.com/spring-boot-api-key-secret
 
 Oauth : https://www.youtube.com/watch?v=us0VjFiHogo&t=700s
 
-jwt : 
+jwt : https://www.toptal.com/spring/spring-security-tutorial
