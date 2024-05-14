@@ -2,6 +2,7 @@ package com.teacher.crud.controller;
 
 import java.util.List;
 
+import com.teacher.crud.config.JWTTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,9 @@ public class TeacherController {
 
 	@Autowired
 	TeacherServices TeacherService;
+
+    @Autowired
+    private JWTTokenProvider jwtTokenProvider;
 
 	@PostMapping("/save")
 	public TeacherModel saveTeacherModel(@RequestBody TeacherModel t) {

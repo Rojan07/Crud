@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,20 +28,35 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig{
+
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    private JWTEntryPoint  authEntryPoint;
+
+
     // REST API AUTHENTICATION USING HTTP BASIC AUTH
-     @Override
-     protected void configure(HttpSecurity http) throws Exception
+     @Bean
+     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
      {
          http
              .csrf().disable()
+             .exceptionHandling()
+             .authenticationEntryPoint(authEntryPoint)
+             .and()
+             .sessionManagement()
+             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+             .and()
              .authorizeRequests().anyRequest().authenticated()
              .and()
              .httpBasic();
+
+         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+         return http.build();
      }
 
      @Bean
@@ -69,6 +85,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
      public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
          return authenticationConfiguration.getAuthenticationManager();
      }
+
+     @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+         return new JWTAuthenticationFilter();
+     }
+
+
+
+
 
 
     // REST API AUTHENTICATION USING API KEYS

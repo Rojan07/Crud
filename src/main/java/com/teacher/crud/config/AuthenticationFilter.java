@@ -16,7 +16,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import com.teacher.crud.service.AuthenticationService;
 
 
-public class AuthenticationFilter extends GenericFilterBean implements AuthenticationEntryPoint {
+public class AuthenticationFilter extends GenericFilterBean{
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -29,14 +29,5 @@ public class AuthenticationFilter extends GenericFilterBean implements Authentic
                    httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 }
                 chain.doFilter(request, response);
-    }
-
-
-    //for JWT Authentication
-    @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        PrintWriter writer = httpServletResponse.getWriter();
-        writer.println("access denied");
     }
 }
