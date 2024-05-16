@@ -13,7 +13,7 @@ import java.io.IOException;
 @Component
 public class JWTEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authenticationException) throws IOException, ServletException {
+    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException authenticationException) throws IOException {
         httpServletResponse.sendError((HttpServletResponse.SC_UNAUTHORIZED),authenticationException.getMessage());
     }
 }
